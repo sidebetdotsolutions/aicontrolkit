@@ -1,0 +1,20 @@
+{
+  "name": "ai-control-kit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI Governance Policy Generator",
+  "scripts": {
+    "dev": "wrangler pages dev ./public --live-reload",
+    "deploy": "wrangler pages deploy ./public",
+    "tail": "wrangler pages deployment tail"
+  },
+  "dependencies": {
+    "jspdf": "^2.5.1"
+  },
+  "devDependencies": {
+    "wrangler": "^3.99.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

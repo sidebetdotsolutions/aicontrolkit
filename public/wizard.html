@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Policy Wizard — AI Control Kit</title>
+  <meta name="description" content="Generate your AI governance policy in minutes.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="noise"></div>
+  
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="logo">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">AI Control Kit</span>
+      </a>
+      <div class="nav-links">
+        <a href="/">← Back to Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Wizard Container -->
+  <main class="wizard-container" x-data="wizard" x-init="init()">
+    <div class="wizard-card">
+      
+      <!-- Loading State -->
+      <template x-if="step === 'loading'">
+        <div class="generating-state">
+          <div class="generating-spinner"></div>
+          <h2>Loading...</h2>
+          <p>Preparing the policy wizard</p>
+        </div>
+      </template>
+
+      <!-- Error State -->
+      <template x-if="step === 'error'">
+        <div class="error-state">
+          <div class="error-icon">⚠️</div>
+          <h2>Something went wrong</h2>
+          <p x-text="error"></p>
+          <button class="btn btn-primary" @click="init()">Try Again</button>
+        </div>
+      </template>
+
+      <!-- Step 1: Jurisdiction Selection -->
+      <template x-if="step === 'jurisdiction'">
+        <div>
+          <header class="wizard-header">
+            <div class="wizard-progress">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 10%"></div>
+              </div>
+              <span class="progress-text">Step 1 of 3</span>
+            </div>
+            <h1 class="wizard-title">Where does your AI system operate?</h1>
+            <p class="wizard-subtitle">Select all jurisdictions that apply. We'll generate a policy covering each region's requirements.</p>
+          </header>
+          
+          <div class="jurisdiction-select-grid">
+            <template x-for="j in jurisdictions" :key="j.id">
+              <div 
+                class="jurisdiction-select-card"
+                :class="{ 'selected': selectedJurisdictions.includes(j.id) }"
+                @click="toggleJurisdiction(j.id)"
+              >
+                <span class="jurisdiction-flag" x-text="j.icon"></span>
+                <h3 x-text="j.name"></h3>
+                <p x-text="j.regulation"></p>
+              </div>
+            </template>
+          </div>
+          
+          <div class="wizard-nav">
+            <span class="wizard-nav-hint" x-show="selectedJurisdictions.length === 0">
+              Select at least one jurisdiction to continue
+            </span>
+            <span x-show="selectedJurisdictions.length > 0"></span>
+            <button 
+              class="btn btn-primary"
+              :disabled="selectedJurisdictions.length === 0"
+              @click="startQuestions()"
+            >
+              Continue
+              <span class="btn-arrow">→</span>
+            </button>
+          </div>
+        </div>
+      </template>
+
+      <!-- Step 2: Questions -->
+      <template x-if="step === 'questions'">
+        <div>
+          <header class="wizard-header">
+            <div class="wizard-progress">
+              <div class="progress-bar">
+                <div class="progress-fill" :style="{ width: progressPercent + '%' }"></div>
+              </div>
+              <span class="progress-text" x-text="progressText"></span>
+            </div>
+            <h1 class="wizard-title" x-text="currentJurisdictionData?.name"></h1>
+            <p class="wizard-subtitle" x-text="currentJurisdictionData?.regulation"></p>
+          </header>
+          
+          <div class="question-card" x-show="currentQuestion">
+            <label class="question-label" x-text="currentQuestion?.question"></label>
+            <p class="question-help" x-text="currentQuestion?.help" x-show="currentQuestion?.help"></p>
+            
+            <!-- Select Type -->
+            <template x-if="currentQuestion?.type === 'select'">
+              <div class="question-options">
+                <template x-for="option in currentQuestion.options" :key="option.value">
+                  <button 
+                    class="option-btn"
+                    :class="{ 'selected': getCurrentAnswer() === option.value }"
+                    @click="answerQuestion(option.value)"
+                  >
+                    <span class="option-radio"></span>
+                    <span x-text="option.label"></span>
+                  </button>
+                </template>
+              </div>
+            </template>
+            
+            <!-- Boolean Type -->
+            <template x-if="currentQuestion?.type === 'boolean'">
+              <div class="boolean-options">
+                <button 
+                  class="boolean-btn"
+                  :class="{ 'selected': getCurrentAnswer() === true }"
+                  @click="answerQuestion(true)"
+                >
+                  Yes
+                </button>
+                <button 
+                  class="boolean-btn"
+                  :class="{ 'selected': getCurrentAnswer() === false }"
+                  @click="answerQuestion(false)"
+                >
+                  No
+                </button>
+              </div>
+            </template>
+          </div>
+          
+          <div class="wizard-nav">
+            <button class="btn" @click="previousQuestion()" :disabled="!canGoBack">
+              ← Back
+            </button>
+            <button 
+              class="btn btn-primary" 
+              @click="skipQuestion()"
+              x-show="currentQuestion && getCurrentAnswer() !== undefined"
+            >
+              Next
+              <span class="btn-arrow">→</span>
+            </button>
+          </div>
+        </div>
+      </template>
+
+      <!-- Step 3: Generating -->
+      <template x-if="step === 'generating'">
+        <div class="generating-state">
+          <div class="generating-spinner"></div>
+          <h2>Generating your policy...</h2>
+          <p>Analyzing your answers and compiling requirements</p>
+        </div>
+      </template>
+
+      <!-- Step 4: Result -->
+      <template x-if="step === 'result'">
+        <div>
+          <header class="result-header">
+            <div>
+              <h1 class="wizard-title">Your AI Governance Policy</h1>
+              <p class="wizard-subtitle">Generated for <span x-text="selectedJurisdictions.length"></span> jurisdiction(s)</p>
+            </div>
+            <div class="result-actions">
+              <button class="btn" @click="startOver()">Start Over</button>
+              <button class="btn btn-primary" @click="downloadPdf()">
+                Download PDF
+              </button>
+            </div>
+          </header>
+          
+          <div class="policy-preview">
+            <template x-for="section in policy?.sections" :key="section.jurisdiction">
+              <div class="policy-section">
+                <div class="policy-jurisdiction">
+                  <span x-text="getJurisdictionIcon(section.jurisdiction)"></span>
+                  <span x-text="section.title"></span>
+                </div>
+                <template x-for="(content, idx) in section.content" :key="idx">
+                  <div style="margin-bottom: 1rem;">
+                    <h3 x-text="content.heading"></h3>
+                    <p x-text="content.body"></p>
+                  </div>
+                </template>
+              </div>
+            </template>
+          </div>
+          
+          <!-- Waitlist Prompt -->
+          <div class="waitlist-prompt" x-data="{ email: '', submitted: false, waitlistError: '' }">
+            <template x-if="!submitted">
+              <div>
+                <h3>Want to remove the watermark?</h3>
+                <p>Join the waitlist for saved policies, compliance updates, and watermark-free exports.</p>
+                <form @submit.prevent="
+                  if (!email.includes('@')) { waitlistError = 'Please enter a valid email'; return; }
+                  fetch('/api/subscribe', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                      email, 
+                      source: 'wizard_complete', 
+                      jurisdictions: selectedJurisdictions 
+                    })
+                  })
+                  .then(r => { if (r.ok) submitted = true; else throw new Error(); })
+                  .catch(() => { waitlistError = 'Something went wrong. Try again.' });
+                ">
+                  <div class="form-group">
+                    <input 
+                      type="email" 
+                      x-model="email" 
+                      placeholder="you@company.com"
+                      class="input"
+                      required
+                    >
+                    <button type="submit" class="btn btn-primary">Join Waitlist</button>
+                  </div>
+                  <p class="form-error" x-show="waitlistError" x-text="waitlistError"></p>
+                </form>
+              </div>
+            </template>
+            <template x-if="submitted">
+              <div class="form-success" style="justify-content: center;">
+                <span class="success-icon">✓</span>
+                <p>You're on the list! We'll be in touch.</p>
+              </div>
+            </template>
+          </div>
+        </div>
+      </template>
+      
+    </div>
+  </main>
+
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  
+  <!-- jsPDF for PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  
+  <!-- App -->
+  <script src="/js/api.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

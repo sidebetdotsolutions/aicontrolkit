@@ -1,0 +1,27 @@
+name = "ai-control-kit"
+compatibility_date = "2024-12-01"
+pages_build_output_dir = "./public"
+
+# Development settings
+[dev]
+port = 8788
+local_protocol = "http"
+
+# Environment variables (non-secret)
+[vars]
+ENVIRONMENT = "production"
+APP_NAME = "AI Control Kit"
+
+# Secrets (set via `wrangler secret put SECRET_NAME`)
+# RESEND_API_KEY = "re_xxxxx"
+# TOKEN_SECRET = "your-256-bit-secret"
+# RESEND_AUDIENCE_ID = "your-audience-id"
+
+# Build configuration
+[build]
+command = ""
+
+# Custom routes for API functions
+[[routes]]
+pattern = "/api/*"
+zone_name = "aicontrolkit.com"
