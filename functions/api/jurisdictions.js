@@ -3,7 +3,7 @@
  * Returns list of available jurisdictions with metadata
  */
 
-import { getJurisdictionList } from '../../lib/jurisdictions/index.js';
+import { getJurisdictionList } from '../lib/jurisdictions/index.js';
 
 export async function onRequestGet(context) {
   const corsHeaders = {

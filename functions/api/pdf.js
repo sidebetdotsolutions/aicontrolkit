@@ -7,8 +7,8 @@
  * or could integrate with a PDF service in the future.
  */
 
-import { verifyToken } from '../../lib/auth/tokens.js';
-import { generatePolicy } from '../../lib/jurisdictions/index.js';
+import { verifyToken } from '../lib/auth/tokens.js';
+import { generatePolicy } from '../lib/jurisdictions/index.js';
 
 export async function onRequestGet(context) {
   const { request, env } = context;

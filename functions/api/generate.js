@@ -3,9 +3,9 @@
  * Generates policy document from answers
  */
 
-import { generatePolicy } from '../../lib/jurisdictions/index.js';
-import { trackGeneration } from '../../lib/hooks/analytics.js';
-import { signToken } from '../../lib/auth/tokens.js';
+import { generatePolicy } from '../lib/jurisdictions/index.js';
+import { trackGeneration } from '../lib/hooks/analytics.js';
+import { signToken } from '../lib/auth/tokens.js';
 
 export async function onRequestPost(context) {
   const { request, env } = context;

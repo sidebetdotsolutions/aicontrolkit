@@ -3,7 +3,7 @@
  * Returns questions for a specific jurisdiction
  */
 
-import { getJurisdictionQuestions } from '../../../lib/jurisdictions/index.js';
+import { getJurisdictionQuestions } from '../../lib/jurisdictions/index.js';
 
 export async function onRequestGet(context) {
   const { params } = context;
