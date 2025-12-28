@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Control Kit — Governance Policies for AI Systems</title>
-  <meta name="description" content="Generate jurisdiction-specific AI governance policies in minutes. EU AI Act, NIST, UK, Brazil, China, Australia compliance.">
+  <meta name="description" content="Generate jurisdiction-specific AI governance policies in minutes. EU AI Act, NIST, UK, Brazil, China, Australia, Canada compliance.">
   
   <!-- Open Graph -->
   <meta property="og:title" content="AI Control Kit — Governance Policies for AI Systems">
@@ -12,67 +12,203 @@
   <meta property="og:type" content="website">
   <meta property="og:image" content="/assets/og-image.png">
   
-  <!-- Fonts -->
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    :root {
+      --bs-body-bg: #0a0a0b;
+      --bs-body-color: #f8f9fa;
+      --bs-primary: #22c55e;
+      --bs-primary-rgb: 34, 197, 94;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0b;
+    }
+    
+    .navbar {
+      background: rgba(10, 10, 11, 0.9) !important;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #2a2a2e;
+    }
+    
+    .navbar-brand {
+      font-weight: 600;
+      color: #22c55e !important;
+    }
+    
+    .btn-primary {
+      background: #22c55e;
+      border-color: #22c55e;
+      color: #000;
+      font-weight: 500;
+    }
+    
+    .btn-primary:hover {
+      background: #16a34a;
+      border-color: #16a34a;
+      color: #000;
+    }
+    
+    .btn-outline-light:hover {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+    
+    .text-gradient {
+      background: linear-gradient(135deg, #22c55e 0%, #f59e0b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .hero {
+      padding-top: 100px;
+      padding-bottom: 60px;
+    }
+    
+    .card {
+      background: #141416;
+      border: 1px solid #2a2a2e;
+    }
+    
+    .card:hover {
+      border-color: #3a3a3e;
+    }
+    
+    .jurisdiction-flag {
+      font-size: 2rem;
+    }
+    
+    .section-dark {
+      background: #141416;
+    }
+    
+    .step-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #3a3a3e;
+    }
+    
+    .badge-glow {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #22c55e;
+    }
+    
+    .permit-card {
+      background: #1a1a1d;
+      border: 1px solid #2a2a2e;
+      border-radius: 12px;
+    }
+    
+    .permit-header {
+      background: rgba(34, 197, 94, 0.1);
+      border-bottom: 1px solid #2a2a2e;
+    }
+    
+    .text-muted {
+      color: #888 !important;
+    }
+    
+    .form-control {
+      background: #0a0a0b;
+      border-color: #2a2a2e;
+      color: #fff;
+    }
+    
+    .form-control:focus {
+      background: #0a0a0b;
+      border-color: #22c55e;
+      color: #fff;
+      box-shadow: 0 0 0 0.25rem rgba(34, 197, 94, 0.25);
+    }
+    
+    .form-control::placeholder {
+      color: #555;
+    }
+    
+    footer {
+      border-top: 1px solid #2a2a2e;
+    }
+    
+    .coming-soon-card {
+      background: #1a1a1d;
+      border: 1px solid #2a2a2e;
+      border-radius: 12px;
+    }
+  </style>
 </head>
 <body>
-  <div class="noise"></div>
   
   <!-- Navigation -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="logo">
-        <span class="logo-icon">◈</span>
-        <span class="logo-text">AI Control Kit</span>
-      </a>
-      <div class="nav-links">
-        <a href="#jurisdictions">Jurisdictions</a>
-        <a href="#how-it-works">How It Works</a>
-        <a href="/wizard.html" class="btn btn-primary btn-sm">Generate Policy</a>
+  <nav class="navbar navbar-expand-md fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="/">◈ AI Control Kit</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center gap-3">
+          <li class="nav-item">
+            <a class="nav-link" href="#jurisdictions">Jurisdictions</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#how-it-works">How It Works</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-primary btn-sm px-3" href="/wizard.html">Generate Policy</a>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
 
   <!-- Hero -->
   <header class="hero">
-    <div class="hero-grid">
-      <div class="hero-content">
-        <div class="hero-badge">
-          <span class="badge-dot"></span>
-          Free Policy Generator
-        </div>
-        <h1>AI governance for<br><span class="text-gradient">teams that ship.</span></h1>
-        <p class="hero-subtitle">
-          Generate jurisdiction-specific compliance policies for your AI systems. 
-          Answer a few questions, get a downloadable policy document. No account required.
-        </p>
-        <div class="hero-actions">
-          <a href="/wizard.html" class="btn btn-primary btn-lg">
-            Generate Your Policy
-            <span class="btn-arrow">→</span>
-          </a>
-          <span class="hero-note">Free • No signup • 5 minutes</span>
-        </div>
-      </div>
-      <div class="hero-visual">
-        <div class="permit-card">
-          <div class="permit-header">
-            <span class="permit-icon">✓</span>
-            <span class="permit-status">COMPLIANT</span>
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <span class="badge badge-glow px-3 py-2 mb-3">
+            <span class="me-1">●</span> Free Policy Generator
+          </span>
+          <h1 class="display-4 fw-bold mb-3">
+            AI governance for<br><span class="text-gradient">teams that ship.</span>
+          </h1>
+          <p class="lead text-muted mb-4">
+            Generate jurisdiction-specific compliance policies for your AI systems. 
+            Answer a few questions, get a downloadable policy document. No account required.
+          </p>
+          <div class="d-flex flex-column flex-sm-row gap-3 align-items-start">
+            <a href="/wizard.html" class="btn btn-primary btn-lg px-4">
+              Generate Your Policy →
+            </a>
+            <span class="text-muted small align-self-center">Free • No signup • 5 minutes</span>
           </div>
-          <div class="permit-body">
-            <div class="permit-title">AI Governance Policy</div>
-            <div class="permit-meta">
-              <span class="permit-jurisdiction">🇪🇺 EU AI Act</span>
-              <span class="permit-date">Generated today</span>
+        </div>
+        <div class="col-lg-6 text-center">
+          <div class="permit-card p-0 d-inline-block" style="max-width: 320px;">
+            <div class="permit-header p-3 d-flex align-items-center gap-2">
+              <span class="bg-success text-dark rounded-circle d-flex align-items-center justify-content-center" style="width:24px;height:24px;font-size:12px;">✓</span>
+              <span class="text-success small fw-semibold text-uppercase tracking-wide">Compliant</span>
             </div>
-          </div>
-          <div class="permit-footer">
-            <div class="permit-hash">SHA256: 7f3a...</div>
+            <div class="p-4">
+              <h5 class="mb-3">AI Governance Policy</h5>
+              <div class="d-flex justify-content-between text-muted small">
+                <span>🇪🇺 EU AI Act</span>
+                <span>Generated today</span>
+              </div>
+            </div>
+            <div class="p-3 bg-dark border-top border-secondary">
+              <code class="text-muted small">SHA256: 7f3a...</code>
+            </div>
           </div>
         </div>
       </div>
@@ -80,197 +216,211 @@
   </header>
 
   <!-- Jurisdictions -->
-  <section id="jurisdictions" class="section">
-    <div class="section-inner">
-      <div class="section-header">
-        <h2>Seven jurisdictions.<br>One wizard.</h2>
-        <p>We track the regulations so you don't have to.</p>
+  <section id="jurisdictions" class="py-5">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold">Seven jurisdictions. One wizard.</h2>
+        <p class="text-muted">We track the regulations so you don't have to.</p>
       </div>
-      <div class="jurisdiction-grid">
-        <div class="jurisdiction-card">
-          <span class="jurisdiction-flag">🇪🇺</span>
-          <h3>European Union</h3>
-          <p class="jurisdiction-reg">EU AI Act</p>
-          <ul class="jurisdiction-features">
-            <li>Risk classification</li>
-            <li>FRIA templates</li>
-            <li>Conformity assessment</li>
-          </ul>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 p-4">
+            <span class="jurisdiction-flag mb-2">🇪🇺</span>
+            <h5>European Union</h5>
+            <p class="text-success small mb-2">EU AI Act</p>
+            <ul class="text-muted small ps-3 mb-0">
+              <li>Risk classification</li>
+              <li>FRIA templates</li>
+              <li>Conformity assessment</li>
+            </ul>
+          </div>
         </div>
-        <div class="jurisdiction-card">
-          <span class="jurisdiction-flag">🇺🇸</span>
-          <h3>United States</h3>
-          <p class="jurisdiction-reg">NIST AI RMF</p>
-          <ul class="jurisdiction-features">
-            <li>Risk management</li>
-            <li>Copyright provenance</li>
-            <li>State-specific rules</li>
-          </ul>
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 p-4">
+            <span class="jurisdiction-flag mb-2">🇺🇸</span>
+            <h5>United States</h5>
+            <p class="text-success small mb-2">NIST AI RMF</p>
+            <ul class="text-muted small ps-3 mb-0">
+              <li>Risk management</li>
+              <li>Copyright provenance</li>
+              <li>State-specific rules</li>
+            </ul>
+          </div>
         </div>
-        <div class="jurisdiction-card">
-          <span class="jurisdiction-flag">🇬🇧</span>
-          <h3>United Kingdom</h3>
-          <p class="jurisdiction-reg">Pro-Innovation Framework</p>
-          <ul class="jurisdiction-features">
-            <li>Context-based approach</li>
-            <li>Contestability workflows</li>
-            <li>AISI alignment</li>
-          </ul>
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 p-4">
+            <span class="jurisdiction-flag mb-2">🇬🇧</span>
+            <h5>United Kingdom</h5>
+            <p class="text-success small mb-2">Pro-Innovation Framework</p>
+            <ul class="text-muted small ps-3 mb-0">
+              <li>Context-based approach</li>
+              <li>Contestability workflows</li>
+              <li>AISI alignment</li>
+            </ul>
+          </div>
         </div>
-        <div class="jurisdiction-card">
-          <span class="jurisdiction-flag">🇧🇷</span>
-          <h3>Brazil</h3>
-          <p class="jurisdiction-reg">AI Bill + LGPD</p>
-          <ul class="jurisdiction-features">
-            <li>Right to explanation</li>
-            <li>Strict liability rules</li>
-            <li>Human oversight</li>
-          </ul>
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 p-4">
+            <span class="jurisdiction-flag mb-2">🇧🇷</span>
+            <h5>Brazil</h5>
+            <p class="text-success small mb-2">AI Bill + LGPD</p>
+            <ul class="text-muted small ps-3 mb-0">
+              <li>Right to explanation</li>
+              <li>Strict liability rules</li>
+              <li>Human oversight</li>
+            </ul>
+          </div>
         </div>
-        <div class="jurisdiction-card">
-          <span class="jurisdiction-flag">🇨🇳</span>
-          <h3>China</h3>
-          <p class="jurisdiction-reg">AI Governance Rules</p>
-          <ul class="jurisdiction-features">
-            <li>Content filtering</li>
-            <li>Algorithm registration</li>
-            <li>Identity verification</li>
-          </ul>
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 p-4">
+            <span class="jurisdiction-flag mb-2">🇨🇳</span>
+            <h5>China</h5>
+            <p class="text-success small mb-2">AI Governance Rules</p>
+            <ul class="text-muted small ps-3 mb-0">
+              <li>Content filtering</li>
+              <li>Algorithm registration</li>
+              <li>Identity verification</li>
+            </ul>
+          </div>
         </div>
-        <div class="jurisdiction-card">
-          <span class="jurisdiction-flag">🇦🇺</span>
-          <h3>Australia</h3>
-          <p class="jurisdiction-reg">AI Guardrails</p>
-          <ul class="jurisdiction-features">
-            <li>Voluntary guardrails</li>
-            <li>Human-in-the-loop</li>
-            <li>Supply chain transparency</li>
-          </ul>
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 p-4">
+            <span class="jurisdiction-flag mb-2">🇦🇺</span>
+            <h5>Australia</h5>
+            <p class="text-success small mb-2">AI Guardrails</p>
+            <ul class="text-muted small ps-3 mb-0">
+              <li>Voluntary guardrails</li>
+              <li>Human-in-the-loop</li>
+              <li>Supply chain transparency</li>
+            </ul>
+          </div>
         </div>
-        <div class="jurisdiction-card">
-          <span class="jurisdiction-flag">🇨🇦</span>
-          <h3>Canada</h3>
-          <p class="jurisdiction-reg">AIDA + PIPEDA</p>
-          <ul class="jurisdiction-features">
-            <li>High-impact AI rules</li>
-            <li>Bias mitigation</li>
-            <li>Quebec Law 25</li>
-          </ul>
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 p-4">
+            <span class="jurisdiction-flag mb-2">🇨🇦</span>
+            <h5>Canada</h5>
+            <p class="text-success small mb-2">AIDA + PIPEDA</p>
+            <ul class="text-muted small ps-3 mb-0">
+              <li>High-impact AI rules</li>
+              <li>Bias mitigation</li>
+              <li>Quebec Law 25</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- How It Works -->
-  <section id="how-it-works" class="section section-dark">
-    <div class="section-inner">
-      <div class="section-header">
-        <h2>Three steps to compliance.</h2>
-        <p>No legalese. No consultants. No six-figure invoices.</p>
+  <section id="how-it-works" class="py-5 section-dark">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold">Three steps to compliance.</h2>
+        <p class="text-muted">No legalese. No consultants. No six-figure invoices.</p>
       </div>
-      <div class="steps">
-        <div class="step">
+      <div class="row g-4 text-center">
+        <div class="col-md-4">
           <div class="step-number">01</div>
-          <h3>Select jurisdictions</h3>
-          <p>Choose one or more regions where your AI system operates.</p>
+          <h5>Select jurisdictions</h5>
+          <p class="text-muted small">Choose one or more regions where your AI system operates.</p>
         </div>
-        <div class="step-connector"></div>
-        <div class="step">
+        <div class="col-md-4">
           <div class="step-number">02</div>
-          <h3>Answer questions</h3>
-          <p>Our TurboTax-style wizard asks plain-English questions about your AI system.</p>
+          <h5>Answer questions</h5>
+          <p class="text-muted small">Our TurboTax-style wizard asks plain-English questions about your AI system.</p>
         </div>
-        <div class="step-connector"></div>
-        <div class="step">
+        <div class="col-md-4">
           <div class="step-number">03</div>
-          <h3>Download policy</h3>
-          <p>Get a professional governance policy document tailored to your answers.</p>
+          <h5>Download policy</h5>
+          <p class="text-muted small">Get a professional governance policy document tailored to your answers.</p>
         </div>
       </div>
-      <div class="section-cta">
-        <a href="/wizard.html" class="btn btn-primary btn-lg">
-          Start the Wizard
-          <span class="btn-arrow">→</span>
-        </a>
+      <div class="text-center mt-5">
+        <a href="/wizard.html" class="btn btn-primary btn-lg px-4">Start the Wizard →</a>
       </div>
     </div>
   </section>
 
   <!-- Coming Soon / Waitlist -->
-  <section class="section" id="waitlist">
-    <div class="section-inner">
-      <div class="coming-soon-card">
-        <div class="coming-soon-content">
-          <span class="coming-soon-badge">Coming Soon</span>
-          <h2>The full AI Control Kit</h2>
-          <p>
-            We're building a complete governance platform: saved policies, real-time 
-            compliance updates, the "Permit Office" for AI agent control, and more.
-          </p>
-          <ul class="coming-soon-features">
-            <li><span class="check">✓</span> Saved policies with version history</li>
-            <li><span class="check">✓</span> Alerts when regulations change</li>
-            <li><span class="check">✓</span> Watermark-free PDF exports</li>
-            <li><span class="check">✓</span> Team collaboration</li>
-            <li><span class="check">✓</span> AI agent permit system</li>
-          </ul>
-        </div>
-        <div class="coming-soon-form" x-data="{ email: '', submitted: false, error: '' }">
-          <template x-if="!submitted">
-            <form @submit.prevent="
-              if (!email.includes('@')) { error = 'Please enter a valid email'; return; }
-              fetch('/api/subscribe', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, source: 'landing_waitlist', jurisdictions: [] })
-              })
-              .then(r => { if (r.ok) submitted = true; else throw new Error(); })
-              .catch(() => { error = 'Something went wrong. Try again.' });
-            ">
-              <div class="form-group">
-                <input 
-                  type="email" 
-                  x-model="email" 
-                  placeholder="you@company.com"
-                  class="input"
-                  required
-                >
-                <button type="submit" class="btn btn-primary">Join Waitlist</button>
+  <section class="py-5" id="waitlist">
+    <div class="container">
+      <div class="coming-soon-card p-4 p-lg-5">
+        <div class="row g-4 align-items-center">
+          <div class="col-lg-6">
+            <span class="badge bg-warning text-dark mb-3">Coming Soon</span>
+            <h3 class="fw-bold">The full AI Control Kit</h3>
+            <p class="text-muted">
+              We're building a complete governance platform: saved policies, real-time 
+              compliance updates, the "Permit Office" for AI agent control, and more.
+            </p>
+            <ul class="text-muted">
+              <li><span class="text-success">✓</span> Saved policies with version history</li>
+              <li><span class="text-success">✓</span> Alerts when regulations change</li>
+              <li><span class="text-success">✓</span> Watermark-free PDF exports</li>
+              <li><span class="text-success">✓</span> Team collaboration</li>
+              <li><span class="text-success">✓</span> AI agent permit system</li>
+            </ul>
+          </div>
+          <div class="col-lg-6" x-data="{ email: '', submitted: false, error: '' }">
+            <template x-if="!submitted">
+              <form @submit.prevent="
+                if (!email.includes('@')) { error = 'Please enter a valid email'; return; }
+                fetch('/api/subscribe', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ email, source: 'landing_waitlist', jurisdictions: [] })
+                })
+                .then(r => { if (r.ok) submitted = true; else throw new Error(); })
+                .catch(() => { error = 'Something went wrong. Try again.' });
+              ">
+                <div class="d-flex flex-column flex-sm-row gap-2">
+                  <input 
+                    type="email" 
+                    x-model="email" 
+                    placeholder="you@company.com"
+                    class="form-control form-control-lg"
+                    required
+                  >
+                  <button type="submit" class="btn btn-primary btn-lg px-4 flex-shrink-0">Join Waitlist</button>
+                </div>
+                <p class="text-danger small mt-2 mb-0" x-show="error" x-text="error"></p>
+                <p class="text-muted small mt-2 mb-0">No spam. Only product updates.</p>
+              </form>
+            </template>
+            <template x-if="submitted">
+              <div class="alert alert-success d-flex align-items-center gap-2 mb-0">
+                <span class="fs-4">✓</span>
+                <span>You're on the list! We'll be in touch.</span>
               </div>
-              <p class="form-error" x-show="error" x-text="error"></p>
-              <p class="form-note">No spam. Only product updates.</p>
-            </form>
-          </template>
-          <template x-if="submitted">
-            <div class="form-success">
-              <span class="success-icon">✓</span>
-              <p>You're on the list! We'll be in touch.</p>
-            </div>
-          </template>
+            </template>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <span class="logo-icon">◈</span>
-        <span>AI Control Kit</span>
-      </div>
-      <div class="footer-links">
-        <a href="/wizard.html">Generate Policy</a>
-        <a href="#jurisdictions">Jurisdictions</a>
-        <a href="mailto:aicontrolkit@shoringlabs.com">Contact</a>
-      </div>
-      <div class="footer-legal">
-        <p>© 2025 AI Control Kit. All rights reserved.</p>
+  <footer class="py-4">
+    <div class="container">
+      <div class="row align-items-center g-3">
+        <div class="col-md-4">
+          <span class="text-success">◈</span> AI Control Kit
+        </div>
+        <div class="col-md-4 text-center">
+          <a href="/wizard.html" class="text-muted text-decoration-none me-3">Generate Policy</a>
+          <a href="#jurisdictions" class="text-muted text-decoration-none me-3">Jurisdictions</a>
+          <a href="mailto:aicontrolkit@shoringlabs.com" class="text-muted text-decoration-none">Contact</a>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <span class="text-muted small">© 2025 AI Control Kit. All rights reserved.</span>
+        </div>
       </div>
     </div>
   </footer>
 
   <!-- Alpine.js -->
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

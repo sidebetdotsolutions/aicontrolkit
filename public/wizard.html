@@ -1,264 +1,381 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Policy Wizard — AI Control Kit</title>
   <meta name="description" content="Generate your AI governance policy in minutes.">
   
-  <!-- Fonts -->
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0b;
+      min-height: 100vh;
+    }
+    
+    .navbar {
+      background: rgba(10, 10, 11, 0.9) !important;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #2a2a2e;
+    }
+    
+    .navbar-brand {
+      font-weight: 600;
+      color: #22c55e !important;
+    }
+    
+    .btn-primary {
+      background: #22c55e;
+      border-color: #22c55e;
+      color: #000;
+      font-weight: 500;
+    }
+    
+    .btn-primary:hover {
+      background: #16a34a;
+      border-color: #16a34a;
+      color: #000;
+    }
+    
+    .btn-outline-secondary {
+      border-color: #3a3a3e;
+      color: #888;
+    }
+    
+    .btn-outline-secondary:hover {
+      background: #2a2a2e;
+      border-color: #3a3a3e;
+      color: #fff;
+    }
+    
+    .card {
+      background: #141416;
+      border: 1px solid #2a2a2e;
+    }
+    
+    .jurisdiction-card {
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    
+    .jurisdiction-card:hover {
+      border-color: #3a3a3e;
+    }
+    
+    .jurisdiction-card.selected {
+      border-color: #22c55e;
+      background: rgba(34, 197, 94, 0.1);
+    }
+    
+    .jurisdiction-flag {
+      font-size: 1.5rem;
+    }
+    
+    .option-btn {
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    
+    .option-btn:hover {
+      border-color: #22c55e;
+      background: rgba(34, 197, 94, 0.1);
+    }
+    
+    .option-btn.selected {
+      border-color: #22c55e;
+      background: rgba(34, 197, 94, 0.15);
+    }
+    
+    .form-control {
+      background: #0a0a0b;
+      border-color: #2a2a2e;
+      color: #fff;
+    }
+    
+    .form-control:focus {
+      background: #0a0a0b;
+      border-color: #22c55e;
+      color: #fff;
+      box-shadow: 0 0 0 0.25rem rgba(34, 197, 94, 0.25);
+    }
+    
+    .form-control::placeholder {
+      color: #555;
+    }
+    
+    .progress {
+      background: #2a2a2e;
+      height: 6px;
+    }
+    
+    .progress-bar {
+      background: #22c55e;
+    }
+    
+    .text-muted {
+      color: #888 !important;
+    }
+    
+    .policy-section {
+      background: #1a1a1d;
+      border: 1px solid #2a2a2e;
+      border-radius: 8px;
+    }
+    
+    .spinner-border {
+      color: #22c55e;
+    }
+    
+    .disclaimer {
+      color: #555;
+      font-size: 0.75rem;
+    }
+  </style>
 </head>
 <body>
-  <div class="noise"></div>
   
   <!-- Navigation -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="logo">
-        <span class="logo-icon">◈</span>
-        <span class="logo-text">AI Control Kit</span>
-      </a>
-      <div class="nav-links">
-        <a href="/">← Back to Home</a>
-      </div>
+  <nav class="navbar fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="/">◈ AI Control Kit</a>
+      <a href="/" class="text-muted text-decoration-none small">← Back to Home</a>
     </div>
   </nav>
 
   <!-- Wizard Container -->
-  <main class="wizard-container" x-data="wizard" x-init="init()">
-    <div class="wizard-card">
-      
-      <!-- Loading State -->
-      <template x-if="step === 'loading'">
-        <div class="generating-state">
-          <div class="generating-spinner"></div>
-          <h2>Loading...</h2>
-          <p>Preparing the policy wizard</p>
-        </div>
-      </template>
-
-      <!-- Error State -->
-      <template x-if="step === 'error'">
-        <div class="error-state">
-          <div class="error-icon">⚠️</div>
-          <h2>Something went wrong</h2>
-          <p x-text="error"></p>
-          <button class="btn btn-primary" @click="init()">Try Again</button>
-        </div>
-      </template>
-
-      <!-- Step 1: Jurisdiction Selection -->
-      <template x-if="step === 'jurisdiction'">
-        <div>
-          <header class="wizard-header">
-            <div class="wizard-progress">
-              <div class="progress-bar">
-                <div class="progress-fill" style="width: 10%"></div>
-              </div>
-              <span class="progress-text">Step 1 of 3</span>
-            </div>
-            <h1 class="wizard-title">Where does your AI system operate?</h1>
-            <p class="wizard-subtitle">Select all jurisdictions that apply. We'll generate a policy covering each region's requirements.</p>
-          </header>
-          
-          <div class="jurisdiction-select-grid">
-            <template x-for="j in jurisdictions" :key="j.id">
-              <div 
-                class="jurisdiction-select-card"
-                :class="{ 'selected': selectedJurisdictions.includes(j.id) }"
-                @click="toggleJurisdiction(j.id)"
-              >
-                <span class="jurisdiction-flag" x-text="j.icon"></span>
-                <h3 x-text="j.name"></h3>
-                <p x-text="j.regulation"></p>
-              </div>
-            </template>
+  <main class="container py-5" style="padding-top: 80px !important;" x-data="wizard" x-init="init()">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        
+        <!-- Loading State -->
+        <template x-if="step === 'loading'">
+          <div class="text-center py-5">
+            <div class="spinner-border mb-3" role="status"></div>
+            <h4>Loading...</h4>
+            <p class="text-muted">Preparing the policy wizard</p>
           </div>
-          
-          <div class="wizard-nav">
-            <span class="wizard-nav-hint" x-show="selectedJurisdictions.length === 0">
-              Select at least one jurisdiction to continue
-            </span>
-            <span x-show="selectedJurisdictions.length > 0"></span>
-            <button 
-              class="btn btn-primary"
-              :disabled="selectedJurisdictions.length === 0"
-              @click="startQuestions()"
-            >
-              Continue
-              <span class="btn-arrow">→</span>
-            </button>
-          </div>
-        </div>
-      </template>
+        </template>
 
-      <!-- Step 2: Questions -->
-      <template x-if="step === 'questions'">
-        <div>
-          <header class="wizard-header">
-            <div class="wizard-progress">
-              <div class="progress-bar">
-                <div class="progress-fill" :style="{ width: progressPercent + '%' }"></div>
+        <!-- Error State -->
+        <template x-if="step === 'error'">
+          <div class="card p-5 text-center">
+            <div class="fs-1 mb-3">⚠️</div>
+            <h4>Something went wrong</h4>
+            <p class="text-muted" x-text="error"></p>
+            <button class="btn btn-primary mx-auto" style="width: fit-content;" @click="init()">Try Again</button>
+          </div>
+        </template>
+
+        <!-- Step 1: Jurisdiction Selection -->
+        <template x-if="step === 'jurisdiction'">
+          <div>
+            <div class="mb-4">
+              <div class="progress mb-3">
+                <div class="progress-bar" style="width: 10%"></div>
               </div>
-              <span class="progress-text" x-text="progressText"></span>
+              <span class="text-muted small">Step 1 of 3</span>
             </div>
-            <h1 class="wizard-title" x-text="currentJurisdictionData?.name"></h1>
-            <p class="wizard-subtitle" x-text="currentJurisdictionData?.regulation"></p>
-          </header>
-          
-          <div class="question-card" x-show="currentQuestion">
-            <label class="question-label" x-text="currentQuestion?.question"></label>
-            <p class="question-help" x-text="currentQuestion?.help" x-show="currentQuestion?.help"></p>
             
-            <!-- Select Type -->
-            <template x-if="currentQuestion?.type === 'select'">
-              <div class="question-options">
-                <template x-for="option in currentQuestion.options" :key="option.value">
-                  <button 
-                    class="option-btn"
-                    :class="{ 'selected': getCurrentAnswer() === option.value }"
-                    @click="answerQuestion(option.value)"
+            <h2 class="mb-2">Where does your AI system operate?</h2>
+            <p class="text-muted mb-4">Select all jurisdictions that apply. We'll generate a policy covering each region's requirements.</p>
+            
+            <div class="row g-3 mb-4">
+              <template x-for="j in jurisdictions" :key="j.id">
+                <div class="col-sm-6">
+                  <div 
+                    class="card jurisdiction-card p-3 h-100"
+                    :class="{ 'selected': selectedJurisdictions.includes(j.id) }"
+                    @click="toggleJurisdiction(j.id)"
                   >
-                    <span class="option-radio"></span>
-                    <span x-text="option.label"></span>
-                  </button>
-                </template>
-              </div>
-            </template>
-            
-            <!-- Boolean Type -->
-            <template x-if="currentQuestion?.type === 'boolean'">
-              <div class="boolean-options">
-                <button 
-                  class="boolean-btn"
-                  :class="{ 'selected': getCurrentAnswer() === true }"
-                  @click="answerQuestion(true)"
-                >
-                  Yes
-                </button>
-                <button 
-                  class="boolean-btn"
-                  :class="{ 'selected': getCurrentAnswer() === false }"
-                  @click="answerQuestion(false)"
-                >
-                  No
-                </button>
-              </div>
-            </template>
-          </div>
-          
-          <div class="wizard-nav">
-            <button class="btn" @click="previousQuestion()" :disabled="!canGoBack">
-              ← Back
-            </button>
-            <button 
-              class="btn btn-primary" 
-              @click="skipQuestion()"
-              x-show="currentQuestion && getCurrentAnswer() !== undefined"
-            >
-              Next
-              <span class="btn-arrow">→</span>
-            </button>
-          </div>
-        </div>
-      </template>
-
-      <!-- Step 3: Generating -->
-      <template x-if="step === 'generating'">
-        <div class="generating-state">
-          <div class="generating-spinner"></div>
-          <h2>Generating your policy...</h2>
-          <p>Analyzing your answers and compiling requirements</p>
-        </div>
-      </template>
-
-      <!-- Step 4: Result -->
-      <template x-if="step === 'result'">
-        <div>
-          <header class="result-header">
-            <div>
-              <h1 class="wizard-title">Your AI Governance Policy</h1>
-              <p class="wizard-subtitle">Generated for <span x-text="selectedJurisdictions.length"></span> jurisdiction(s)</p>
+                    <span class="jurisdiction-flag mb-2" x-text="j.icon"></span>
+                    <h6 class="mb-1" x-text="j.name"></h6>
+                    <small class="text-muted" x-text="j.regulation"></small>
+                  </div>
+                </div>
+              </template>
             </div>
-            <div class="result-actions">
-              <button class="btn" @click="startOver()">Start Over</button>
-              <button class="btn btn-primary" @click="downloadPdf()">
-                Download PDF
+            
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-muted small" x-show="selectedJurisdictions.length === 0">
+                Select at least one jurisdiction to continue
+              </span>
+              <span x-show="selectedJurisdictions.length > 0"></span>
+              <button 
+                class="btn btn-primary"
+                :disabled="selectedJurisdictions.length === 0"
+                @click="startQuestions()"
+              >
+                Continue →
               </button>
             </div>
-          </header>
-          
-          <div class="policy-preview">
-            <template x-for="section in policy?.sections" :key="section.jurisdiction">
-              <div class="policy-section">
-                <div class="policy-jurisdiction">
-                  <span x-text="getJurisdictionIcon(section.jurisdiction)"></span>
-                  <span x-text="section.title"></span>
-                </div>
-                <template x-for="(content, idx) in section.content" :key="idx">
-                  <div style="margin-bottom: 1rem;">
-                    <h3 x-text="content.heading"></h3>
-                    <p x-text="content.body"></p>
-                  </div>
-                </template>
-              </div>
-            </template>
           </div>
-          
-          <!-- Waitlist Prompt -->
-          <div class="waitlist-prompt" x-data="{ email: '', submitted: false, waitlistError: '' }">
-            <template x-if="!submitted">
-              <div>
-                <h3>Want to remove the watermark?</h3>
-                <p>Join the waitlist for saved policies, compliance updates, and watermark-free exports.</p>
-                <form @submit.prevent="
-                  if (!email.includes('@')) { waitlistError = 'Please enter a valid email'; return; }
-                  fetch('/api/subscribe', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                      email, 
-                      source: 'wizard_complete', 
-                      jurisdictions: selectedJurisdictions 
-                    })
-                  })
-                  .then(r => { if (r.ok) submitted = true; else throw new Error(); })
-                  .catch(() => { waitlistError = 'Something went wrong. Try again.' });
-                ">
-                  <div class="form-group">
-                    <input 
-                      type="email" 
-                      x-model="email" 
-                      placeholder="you@company.com"
-                      class="input"
-                      required
+        </template>
+
+        <!-- Step 2: Questions -->
+        <template x-if="step === 'questions'">
+          <div>
+            <div class="mb-4">
+              <div class="progress mb-3">
+                <div class="progress-bar" :style="{ width: progressPercent + '%' }"></div>
+              </div>
+              <span class="text-muted small" x-text="progressText"></span>
+            </div>
+            
+            <h4 class="mb-1" x-text="currentJurisdictionData?.name"></h4>
+            <p class="text-muted mb-4" x-text="currentJurisdictionData?.regulation"></p>
+            
+            <div class="card p-4 mb-4" x-show="currentQuestion">
+              <label class="form-label fw-semibold mb-2" x-text="currentQuestion?.question"></label>
+              <p class="text-muted small mb-4" x-text="currentQuestion?.help" x-show="currentQuestion?.help"></p>
+              
+              <!-- Select Type -->
+              <template x-if="currentQuestion?.type === 'select'">
+                <div class="d-grid gap-2">
+                  <template x-for="option in currentQuestion.options" :key="option.value">
+                    <div 
+                      class="card option-btn p-3"
+                      :class="{ 'selected': getCurrentAnswer() === option.value }"
+                      @click="answerQuestion(option.value)"
                     >
-                    <button type="submit" class="btn btn-primary">Join Waitlist</button>
-                  </div>
-                  <p class="form-error" x-show="waitlistError" x-text="waitlistError"></p>
-                </form>
-              </div>
-            </template>
-            <template x-if="submitted">
-              <div class="form-success" style="justify-content: center;">
-                <span class="success-icon">✓</span>
-                <p>You're on the list! We'll be in touch.</p>
-              </div>
-            </template>
+                      <span x-text="option.label"></span>
+                    </div>
+                  </template>
+                </div>
+              </template>
+              
+              <!-- Boolean Type -->
+              <template x-if="currentQuestion?.type === 'boolean'">
+                <div class="d-flex gap-3">
+                  <button 
+                    class="btn flex-fill py-3"
+                    :class="getCurrentAnswer() === true ? 'btn-primary' : 'btn-outline-secondary'"
+                    @click="answerQuestion(true)"
+                  >
+                    Yes
+                  </button>
+                  <button 
+                    class="btn flex-fill py-3"
+                    :class="getCurrentAnswer() === false ? 'btn-primary' : 'btn-outline-secondary'"
+                    @click="answerQuestion(false)"
+                  >
+                    No
+                  </button>
+                </div>
+              </template>
+            </div>
+            
+            <div class="d-flex justify-content-between">
+              <button class="btn btn-outline-secondary" @click="previousQuestion()" :disabled="!canGoBack">
+                ← Back
+              </button>
+              <button 
+                class="btn btn-primary" 
+                @click="skipQuestion()"
+                x-show="currentQuestion && getCurrentAnswer() !== undefined"
+              >
+                Next →
+              </button>
+            </div>
           </div>
-          
-          <!-- Disclaimer -->
-          <p class="disclaimer">
-            This tool provides general guidance only and does not constitute legal advice. AI regulations vary by jurisdiction and use case. Consult qualified legal counsel for your specific situation before making compliance decisions.
-          </p>
-        </div>
-      </template>
-      
+        </template>
+
+        <!-- Step 3: Generating -->
+        <template x-if="step === 'generating'">
+          <div class="text-center py-5">
+            <div class="spinner-border mb-3" role="status"></div>
+            <h4>Generating your policy...</h4>
+            <p class="text-muted">Analyzing your answers and compiling requirements</p>
+          </div>
+        </template>
+
+        <!-- Step 4: Result -->
+        <template x-if="step === 'result'">
+          <div>
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start gap-3 mb-4">
+              <div>
+                <h3 class="mb-1">Your AI Governance Policy</h3>
+                <p class="text-muted mb-0">Generated for <span x-text="selectedJurisdictions.length"></span> jurisdiction(s)</p>
+              </div>
+              <div class="d-flex gap-2">
+                <button class="btn btn-outline-secondary" @click="startOver()">Start Over</button>
+                <button class="btn btn-primary" @click="downloadPdf()">Download PDF</button>
+              </div>
+            </div>
+            
+            <div class="d-grid gap-3 mb-4">
+              <template x-for="section in policy?.sections" :key="section.jurisdiction">
+                <div class="policy-section p-4">
+                  <div class="d-flex align-items-center gap-2 mb-3">
+                    <span x-text="getJurisdictionIcon(section.jurisdiction)"></span>
+                    <span class="text-success fw-semibold" x-text="section.title"></span>
+                  </div>
+                  <template x-for="(content, idx) in section.content" :key="idx">
+                    <div class="mb-3">
+                      <h6 x-text="content.heading"></h6>
+                      <p class="text-muted small mb-0" style="white-space: pre-line;" x-text="content.body"></p>
+                    </div>
+                  </template>
+                </div>
+              </template>
+            </div>
+            
+            <!-- Waitlist Prompt -->
+            <div class="card p-4 text-center" x-data="{ email: '', submitted: false, waitlistError: '' }">
+              <template x-if="!submitted">
+                <div>
+                  <h5>Want to remove the watermark?</h5>
+                  <p class="text-muted small mb-3">Join the waitlist for saved policies, compliance updates, and watermark-free exports.</p>
+                  <form @submit.prevent="
+                    if (!email.includes('@')) { waitlistError = 'Please enter a valid email'; return; }
+                    fetch('/api/subscribe', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ 
+                        email, 
+                        source: 'wizard_complete', 
+                        jurisdictions: selectedJurisdictions 
+                      })
+                    })
+                    .then(r => { if (r.ok) submitted = true; else throw new Error(); })
+                    .catch(() => { waitlistError = 'Something went wrong. Try again.' });
+                  ">
+                    <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center" style="max-width: 400px; margin: 0 auto;">
+                      <input 
+                        type="email" 
+                        x-model="email" 
+                        placeholder="you@company.com"
+                        class="form-control"
+                        required
+                      >
+                      <button type="submit" class="btn btn-primary flex-shrink-0">Join Waitlist</button>
+                    </div>
+                    <p class="text-danger small mt-2 mb-0" x-show="waitlistError" x-text="waitlistError"></p>
+                  </form>
+                </div>
+              </template>
+              <template x-if="submitted">
+                <div class="text-success">
+                  <span class="fs-4">✓</span> You're on the list! We'll be in touch.
+                </div>
+              </template>
+            </div>
+            
+            <!-- Disclaimer -->
+            <p class="disclaimer text-center mt-4">
+              This tool provides general guidance only and does not constitute legal advice. AI regulations vary by jurisdiction and use case. Consult qualified legal counsel for your specific situation before making compliance decisions.
+            </p>
+          </div>
+        </template>
+        
+      </div>
     </div>
   </main>
 
@@ -267,6 +384,9 @@
   
   <!-- jsPDF for PDF generation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   
   <!-- App -->
   <script src="/js/api.js"></script>
