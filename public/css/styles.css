@@ -707,7 +707,32 @@ h3 {
 }
 
 @media (max-width: 768px) {
+  .nav {
+    padding: var(--space-sm) var(--space-md);
+  }
+  
+  .nav-links {
+    gap: var(--space-sm);
+  }
+  
   .nav-links a:not(.btn) {
+    display: none;
+  }
+  
+  .nav-links .btn {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.75rem;
+  }
+  
+  .logo {
+    font-size: 1rem;
+  }
+  
+  .logo-icon {
+    font-size: 1.25rem;
+  }
+  
+  .logo-text {
     display: none;
   }
   
@@ -732,8 +757,18 @@ h3 {
     text-align: center;
   }
   
+  .footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-md);
+  }
+  
   .form-group {
     flex-direction: column;
+  }
+  
+  .form-group .input {
+    width: 100%;
   }
   
   .form-group .btn {
@@ -741,17 +776,32 @@ h3 {
   }
   
   .coming-soon-card {
-    padding: var(--space-xl);
+    padding: var(--space-lg);
   }
   
   .hero {
     padding-left: var(--space-md);
     padding-right: var(--space-md);
+    min-height: auto;
+    padding-top: calc(60px + var(--space-2xl));
+    padding-bottom: var(--space-2xl);
+  }
+  
+  .hero-grid {
+    gap: var(--space-xl);
+  }
+  
+  .permit-card {
+    width: 100%;
+    max-width: 280px;
   }
   
   .section {
-    padding-left: var(--space-md);
-    padding-right: var(--space-md);
+    padding: var(--space-2xl) var(--space-md);
+  }
+  
+  .section-header h2 {
+    font-size: 1.5rem;
   }
   
   .jurisdiction-select-grid {
@@ -761,19 +811,60 @@ h3 {
   .result-header {
     flex-direction: column;
     gap: var(--space-md);
-    align-items: flex-start;
+    align-items: stretch;
   }
   
   .result-actions {
+    display: flex;
     width: 100%;
+    gap: var(--space-sm);
   }
   
   .result-actions .btn {
     flex: 1;
+    justify-content: center;
   }
   
   .boolean-options {
     flex-direction: column;
+  }
+  
+  .wizard-container {
+    padding: calc(60px + var(--space-md)) var(--space-md) var(--space-md);
+  }
+  
+  .wizard-title {
+    font-size: 1.25rem;
+  }
+  
+  .question-card {
+    padding: var(--space-lg);
+  }
+  
+  .question-label {
+    font-size: 1rem;
+  }
+  
+  .policy-section {
+    padding: var(--space-lg);
+  }
+  
+  .waitlist-prompt {
+    padding: var(--space-lg);
+  }
+  
+  .waitlist-prompt h3 {
+    font-size: 1rem;
+  }
+  
+  .btn {
+    padding: var(--space-sm) var(--space-md);
+    font-size: 0.8125rem;
+  }
+  
+  .btn-lg {
+    padding: var(--space-sm) var(--space-lg);
+    font-size: 0.875rem;
   }
 }
 
