@@ -172,6 +172,10 @@ h3 {
   color: var(--color-text);
 }
 
+.nav-links .btn {
+  white-space: nowrap;
+}
+
 /* ==========================================================================
    Buttons
    ========================================================================== */
@@ -563,6 +567,7 @@ h3 {
 
 .input {
   flex: 1;
+  min-width: 0;
   padding: var(--space-md);
   font-family: var(--font-display);
   font-size: 1rem;
@@ -725,6 +730,50 @@ h3 {
     flex-direction: column;
     gap: var(--space-lg);
     text-align: center;
+  }
+  
+  .form-group {
+    flex-direction: column;
+  }
+  
+  .form-group .btn {
+    width: 100%;
+  }
+  
+  .coming-soon-card {
+    padding: var(--space-xl);
+  }
+  
+  .hero {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+  
+  .section {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+  
+  .jurisdiction-select-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .result-header {
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: flex-start;
+  }
+  
+  .result-actions {
+    width: 100%;
+  }
+  
+  .result-actions .btn {
+    flex: 1;
+  }
+  
+  .boolean-options {
+    flex-direction: column;
   }
 }
 
@@ -1062,9 +1111,9 @@ h3 {
 /* Disclaimer */
 .disclaimer {
   margin-top: var(--space-xl);
-  padding-top: var(--space-xl);
+  padding-top: var(--space-lg);
   border-top: 1px solid var(--color-border);
-  font-size: 0.70rem;
+  font-size: 0.75rem;
   color: var(--color-text-dim);
   text-align: center;
   line-height: 1.5;
